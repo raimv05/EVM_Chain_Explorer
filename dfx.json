@@ -1,38 +1,41 @@
 {
   "canisters": {
-    "EVM_Chain_Explorer_backend": {
-      "candid": "src/EVM_Chain_Explorer_backend/EVM_Chain_Explorer_backend.did",
-      "package": "EVM_Chain_Explorer_backend",
-      "type": "rust"
-    },
-    "EVM_Chain_Explorer_frontend": {
-      "dependencies": [
-        "EVM_Chain_Explorer_backend"
+    "backend": {
+      "candid": "backend/backend.did",
+      "type": "custom",
+      "shrink": true,
+      "gzip": true,
+      "wasm": "target/wasm32-unknown-unknown/release/backend.wasm",
+      "build": [
+        "cargo build --target wasm32-unknown-unknown --release -p backend",
+        "candid-extractor target/wasm32-unknown-unknown/release/backend.wasm > backend/backend.did"
       ],
-      "source": [
-        "src/EVM_Chain_Explorer_frontend/dist"
-      ],
-      "type": "assets",
-      "workspace": "EVM_Chain_Explorer_frontend"
+      "metadata": [
+        {
+          "name": "candid:service"
+        }
+      ]
     },
-    "internet_identity": {
-      "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",
-      "frontend": {},
+    "frontend": {
+      "dependencies": ["backend"],
+      "frontend": {
+        "entrypoint": "frontend/index.html"
+      },
+      "source": ["frontend/dist"],
+      "type": "assets"
+    },
+    "evm_rpc": {
+      "candid": "https://github.com/dfinity/evm-rpc-canister/releases/download/v2.2.0/evm_rpc.did",
+      "type": "custom",
+      "specified_id": "7hfb6-caaaa-aaaar-qadga-cai",
       "remote": {
         "id": {
-          "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
+          "ic": "7hfb6-caaaa-aaaar-qadga-cai"
         }
       },
-      "type": "custom",
-      "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz"
+      "wasm": "https://github.com/dfinity/evm-rpc-canister/releases/download/v2.2.0/evm_rpc.wasm.gz",
+      "init_arg": "(record {})"
     }
   },
-  "defaults": {
-    "build": {
-      "args": "",
-      "packtool": ""
-    }
-  },
-  "output_env_file": ".env",
-  "version": 1
+  "output_env_file": ".env"
 }
