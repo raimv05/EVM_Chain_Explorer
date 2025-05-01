@@ -28,3 +28,4 @@ To migrate your ICP Ninja project off of the web browser and develop it locally,
 
 ### 2. Open the `BUILD.md` file for further instructions.
 # EVM_Chain_Explorer
+# File
