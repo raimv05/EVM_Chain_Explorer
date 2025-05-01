@@ -1,0 +1,5 @@
+[workspace]
+members = [
+    "src/EVM_Chain_Explorer_backend"
+]
+resolver = "2"
